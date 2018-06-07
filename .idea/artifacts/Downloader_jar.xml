@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Downloader:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Downloader_jar</output-path>
+    <root id="archive" name="Downloader.jar">
+      <element id="module-output" name="Downloader" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jid3lib-0.5.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/commons-io-2.5/commons-io-2.5.jar" path-in-jar="/" />
+      <element id="library" level="project" name="commons-lang3-3.4-javadoc (2)" />
+      <element id="library" level="project" name="commons-lang3-3.4" />
+      <element id="library" level="project" name="commons-lang3-3.4-javadoc" />
+    </root>
+  </artifact>
+</component>

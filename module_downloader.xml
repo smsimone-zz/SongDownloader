@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_downloader" default="compile.module.downloader">
+  <dirname property="module.downloader.basedir" file="${ant.file.module_downloader}"/>
+  
+  <property name="module.jdk.home.downloader" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.downloader" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.downloader" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.downloader" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="downloader.output.dir" value="${module.downloader.basedir}/out/production/Downloader"/>
+  <property name="downloader.testoutput.dir" value="${module.downloader.basedir}/out/test/Downloader"/>
+  
+  <path id="downloader.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="downloader.module.production.classpath">
+    <path refid="${module.jdk.classpath.downloader}"/>
+    <path refid="library.commons-lang3-3.4.classpath"/>
+    <path refid="library.commons-lang3-3.4-javadoc.classpath"/>
+    <path refid="library.commons-lang3-3.4-javadoc_(2).classpath"/>
+    <path refid="library.commons-io-2.5.classpath"/>
+    <path refid="library.jid3lib-0.5.4.classpath"/>
+  </path>
+  
+  <path id="downloader.runtime.production.module.classpath">
+    <pathelement location="${downloader.output.dir}"/>
+    <path refid="library.commons-lang3-3.4.classpath"/>
+    <path refid="library.commons-lang3-3.4-javadoc.classpath"/>
+    <path refid="library.commons-lang3-3.4-javadoc_(2).classpath"/>
+    <path refid="library.commons-io-2.5.classpath"/>
+    <path refid="library.jid3lib-0.5.4.classpath"/>
+  </path>
+  
+  <path id="downloader.module.classpath">
+    <path refid="${module.jdk.classpath.downloader}"/>
+    <pathelement location="${downloader.output.dir}"/>
+    <path refid="library.commons-lang3-3.4.classpath"/>
+    <path refid="library.commons-lang3-3.4-javadoc.classpath"/>
+    <path refid="library.commons-lang3-3.4-javadoc_(2).classpath"/>
+    <path refid="library.commons-io-2.5.classpath"/>
+    <path refid="library.jid3lib-0.5.4.classpath"/>
+  </path>
+  
+  <path id="downloader.runtime.module.classpath">
+    <pathelement location="${downloader.testoutput.dir}"/>
+    <pathelement location="${downloader.output.dir}"/>
+    <path refid="library.commons-lang3-3.4.classpath"/>
+    <path refid="library.commons-lang3-3.4-javadoc.classpath"/>
+    <path refid="library.commons-lang3-3.4-javadoc_(2).classpath"/>
+    <path refid="library.commons-io-2.5.classpath"/>
+    <path refid="library.jid3lib-0.5.4.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.downloader">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.downloader">
+    <patternset refid="excluded.from.module.downloader"/>
+  </patternset>
+  
+  <path id="downloader.module.sourcepath">
+    <dirset dir="${module.downloader.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.downloader" depends="compile.module.downloader.production,compile.module.downloader.tests" description="Compile module Downloader"/>
+  
+  <target name="compile.module.downloader.production" depends="register.custom.compilers" description="Compile module Downloader; production classes">
+    <mkdir dir="${downloader.output.dir}"/>
+    <javac2 destdir="${downloader.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.downloader}/javac">
+      <compilerarg line="${compiler.args.downloader}"/>
+      <bootclasspath refid="downloader.module.bootclasspath"/>
+      <classpath refid="downloader.module.production.classpath"/>
+      <src refid="downloader.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.downloader"/>
+    </javac2>
+    
+    <copy todir="${downloader.output.dir}">
+      <fileset dir="${module.downloader.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.downloader.tests" depends="register.custom.compilers,compile.module.downloader.production" description="compile module Downloader; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.downloader" description="cleanup module">
+    <delete dir="${downloader.output.dir}"/>
+    <delete dir="${downloader.testoutput.dir}"/>
+  </target>
+</project>
